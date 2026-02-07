@@ -1,0 +1,318 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  background: #000;
+  color: #e0f7ff;
+  font-family: 'Orbitron', sans-serif;
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(0, 255, 255, 0.07) 0%, transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(255, 0, 255, 0.06) 0%, transparent 30%);
+  background-size: 100% 100%;
+  animation: bgPulse 18s infinite alternate;
+}
+
+@keyframes bgPulse {
+  0%   { background-position: 0% 0%; opacity: 0.9; }
+  100% { background-position: 100% 100%; opacity: 1; }
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: 
+    linear-gradient(to bottom, transparent 50%, rgba(0, 255, 255, 0.03) 50%),
+    linear-gradient(to right, transparent 50%, rgba(0, 255, 255, 0.03) 50%);
+  background-size: 60px 60px;
+  pointer-events: none;
+  animation: gridMove 60s linear infinite;
+  opacity: 0.4;
+}
+
+@keyframes gridMove {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-60px, -60px); }
+}
+
+.nav-bar {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-120%);   /* ← both at start: centered + above screen */
+  opacity: 0;
+  
+  /* animation or transition goes here */
+  animation: dropFromTop 0.9s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  animation-delay: 0.3s;   /* optional small delay after page load */
+  
+  /* your other styles remain the same */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 10, 20, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 999px;
+  border: 1px solid rgba(0, 255, 255, 0.18);
+  padding: 14px 32px;
+  z-index: 20;
+  gap: 32px;
+  box-shadow: 
+    0 4px 30px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(0, 255, 255, 0.12);
+  max-width: 90vw;
+}
+
+/* The animation keyframe - final state keeps the x-centering */
+@keyframes dropFromTop {
+  to {
+    transform: translateX(-50%) translateY(0);   /* ← ends centered + at normal position */
+    opacity: 1;
+  }
+}
+
+.nav-bar:hover {
+  background: rgba(15, 15, 30, 0.85);
+  border-color: rgba(0, 255, 255, 0.35);
+  box-shadow: 
+    0 8px 40px rgba(0, 0, 0, 0.6),
+    0 0 30px rgba(0, 255, 255, 0.25);
+  transform: translateX(-50%) scale(1.02);
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .nav-bar {
+    padding: 12px 20px;
+    gap: 20px;
+    top: 12px;
+  }
+  .nav-items {
+    gap: 16px;
+  }
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #ffffff;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+}
+
+.logo-circle {
+  background: rgba(255, 255, 255, 0.15);
+  color: #00ffff;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.2);
+}
+
+.nav-items {
+  display: flex;
+  list-style: none;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-items li a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #808080;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.3s ease;
+  position: relative;
+  font-size: 1.4rem;
+}
+
+.nav-items li a .icon {
+  transition: text-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.nav-items li a .text {
+  opacity: 0;
+  font-size: 0.75rem;
+  margin-top: 6px;
+  color: #ffffff;
+  font-family: 'Roboto Mono', monospace;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: translateY(4px);
+  white-space: nowrap;
+}
+
+.nav-items li a:hover {
+  color: #00ffff;
+  transform: scale(1.05);
+}
+
+.nav-items li a:hover .icon {
+  text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff66;
+  transform: scale(1.15);
+}
+
+.nav-items li a:hover .text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.nav-items li.active a {
+  color: #00ffff;
+}
+
+.nav-items li.active a::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 2px;
+  background: #00ffff;
+  box-shadow: 0 0 6px #00ffff;
+  border-radius: 1px;
+}
+
+.container {
+  height: 100vh;
+  display: flex;
+  align-items: center;       /* ← Change from center to top-aligned */
+  justify-content: flex-start;
+  padding-left: 10vw;
+  padding-right: 8vw;
+  padding-top: 6vh;              /* ← Add this: pushes everything down a bit */
+  /* OR for moving up: use negative margin on .content-left as in Option 1 */
+  position: relative;
+}
+
+.content-left {
+  max-width: 50%;                /* Keeps text block from stretching too wide */
+  text-align: left;
+  margin-top: 18vh;
+  opacity: 0;
+  transform: translateX(-80px);
+  animation: slideInFromLeft 1s cubic-bezier(0.22, 1, 0.36, 1) forwards; /* forwards = stay at end state */
+  animation-delay: 0.4s;
+}
+
+@keyframes slideInFromLeft {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+
+h1 {
+  font-size: clamp(4rem, 11vw, 9rem);  /* Much smaller than before */
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  background: linear-gradient(90deg, #00f0ff, #ff00ff, #00f0ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 
+    0 0 25px rgba(0, 240, 255, 0.7),
+    0 0 50px rgba(255, 0, 255, 0.5);
+  animation: glow 4s ease-in-out infinite alternate;
+  line-height: 0.92;
+  margin-bottom: 3rem;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 15px #00f0ff88, 0 0 35px #ff00ff66, 0 0 70px #00f0ff44; }
+  to   { text-shadow: 0 0 35px #00f0ffcc, 0 0 70px #ff00ff99, 0 0 100px #00f0ff66; }
+}
+
+.subtitle {
+  position: relative;           /* needed so we can position the line relative to it */
+  padding-left: 1.2rem;         /* creates space for the line + tiny gap */
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  font-weight: 400;
+  color: #a0f0ff;
+  line-height: 1.5;
+  opacity: 0.92;
+  margin-bottom: 3rem;
+}
+
+.subtitle::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;                   /* thin white line */
+  background: #ffffff;          /* pure white */
+}
+
+.highlight {
+  color: #00f0ff;
+  font-weight: 700;
+}
+
+.tagline-small {
+  font-family: 'Roboto Mono', monospace;
+  font-size: clamp(1rem, 2.1vw, 1.1rem);
+  color: #00ff9d;
+  letter-spacing: 5px;
+  margin-bottom: 0.8rem;
+  text-shadow: 0 0 12px #00ff9d88;
+}
+
+.scroll-hint {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 1rem;
+  color: #00f0ff;
+  letter-spacing: 3px;
+  opacity: 0.8;
+  animation: pulse 2.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; transform: translateY(0); }
+  50%      { opacity: 1;   transform: translateY(-10px); }
+}
+
+.scroll-hint::before {
+  content: "↓";
+  display: block;
+  font-size: 1.8rem;
+  margin-bottom: 0.3rem;
+  color: #ff00ff;
+}
+
+@media (max-width: 900px) {
+  .container {
+    padding-left: 6vw;
+    justify-content: center;
+  }
+  .content-left {
+    max-width: 90%;
+    text-align: center;
+  }
+  h1 {
+    font-size: clamp(3rem, 12vw, 6rem);
+  }
+}
+
+@media (max-height: 680px) {
+  h1 { font-size: 4.5rem; }
+  .subtitle { font-size: 1.2rem; margin-bottom: 2rem; }
+}
